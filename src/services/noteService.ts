@@ -35,7 +35,7 @@ export async function createNote({
   tag,
 }: CreateNote): Promise<NoteProps> {
   const addNote = await axios.post(
-    'https://notehub-public.goit.study/api/note',
+    'https://notehub-public.goit.study/api/notes',
 
     {
       title,
