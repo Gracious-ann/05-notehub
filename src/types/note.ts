@@ -1,11 +1,13 @@
-export interface Notes {
-  id: number;
+export interface Note {
+  id: string;
   title: string;
   content: string;
   createdAt: string;
   updatedAt: string;
-  tag: string;
+  tag: Tag;
 }
+
+export type Tag = 'work' | 'personal' | 'meeting' | 'shopping' | 'todo';
 
 export interface CreateNote {
   title: string;

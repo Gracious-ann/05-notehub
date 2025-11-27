@@ -1,12 +1,12 @@
-import type { Notes } from '../../types/note';
+import type { Note } from '../../types/note';
 import css from './NoteList.module.css';
 
 interface NoteListProps {
-  notes: Notes[];
-  onDelete: (id: number) => void;
+  notes: Note[];
+  deleteMutation: (id: string) => void;
 }
 
-function NoteList({ notes, onDelete }: NoteListProps) {
+function NoteList({ notes, deleteMutation }: NoteListProps) {
   return (
     <ul className={css.list}>
       {notes.map(notes => (
@@ -19,7 +19,7 @@ function NoteList({ notes, onDelete }: NoteListProps) {
           <div className={css.footer}>
             <span className={css.tag}>{notes.tag}</span>
             <button
-              onClick={() => onDelete(notes.id)}
+              onClick={() => deleteMutation(notes.id)}
               className={css.button}
             >
               Delete

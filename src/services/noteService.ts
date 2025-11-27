@@ -1,19 +1,16 @@
 import axios from 'axios';
-import type { CreateNote, Notes } from '../types/note';
+import type { CreateNote, Note } from '../types/note';
 
-interface NotesResponseProps {
-  notes: Notes[];
+interface NotesResponse {
+  notes: Note[];
   totalPages: number;
-}
-interface NoteProps {
-  note: Notes;
 }
 
 export async function fetchNotes(
   title: string,
   page: number
-): Promise<NotesResponseProps> {
-  const response = await axios.get(
+): Promise<NotesResponse> {
+  const response = await axios.get<NotesResponse>(
     'https://notehub-public.goit.study/api/notes',
     {
       params: {
@@ -33,8 +30,8 @@ export async function createNote({
   title,
   content,
   tag,
-}: CreateNote): Promise<NoteProps> {
-  const addNote = await axios.post(
+}: CreateNote): Promise<Note> {
+  const addNote = await axios.post<Note>(
     'https://notehub-public.goit.study/api/notes',
 
     {
@@ -51,8 +48,8 @@ export async function createNote({
   return addNote.data;
 }
 
-export async function deleteNote(id: number): Promise<NoteProps> {
-  const deleteNote = await axios.delete(
+export async function deleteNote(id: string): Promise<Note> {
+  const deleteNote = await axios.delete<Note>(
     `https://notehub-public.goit.study/api/notes/${id}`,
     {
       headers: {

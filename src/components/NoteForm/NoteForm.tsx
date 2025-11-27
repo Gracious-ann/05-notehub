@@ -2,7 +2,7 @@ import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from 'formik';
 import css from './NoteForm.module.css';
 import { useId } from 'react';
 import * as Yup from 'yup';
-import type { CreateNote } from '../../types/note';
+import type { CreateNote, Note } from '../../types/note';
 
 interface NoteFormValue {
   title: string;
@@ -12,7 +12,7 @@ interface NoteFormValue {
 
 interface NoteFormProps {
   onCancel: () => void;
-  onData: (note: CreateNote) => void;
+  addMutation: (note: CreateNote) => Promise<Note>;
 }
 
 const initialValues: NoteFormValue = {
@@ -21,15 +21,18 @@ const initialValues: NoteFormValue = {
   tag: 'Todo',
 };
 
-function NoteForm({ onCancel, onData }: NoteFormProps) {
-  const handleSubmit = (
+function NoteForm({ onCancel, addMutation }: NoteFormProps) {
+  const handleSubmit = async (
     values: NoteFormValue,
     actions: FormikHelpers<NoteFormValue>
   ) => {
-    console.log(values);
-    actions.resetForm();
-    onCancel();
-    onData(values);
+    try {
+      await addMutation(values);
+      actions.resetForm();
+      onCancel();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const fieldId = useId();
@@ -39,11 +42,10 @@ function NoteForm({ onCancel, onData }: NoteFormProps) {
       .required('Title is required')
       .min(3, 'Title must be at least 3 characters')
       .max(50, 'Too Long'),
-    content: Yup.string()
-      .required('Content is required')
-      .min(1, 'Content must be at least 10 characters')
-      .max(500, 'Too Long'),
-    tag: Yup.string().required('Select a tag'),
+    content: Yup.string().max(500, 'Too Long'),
+    tag: Yup.string()
+      .oneOf(['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'], 'Invalid tag')
+      .required('Select a tag'),
   });
 
   return (

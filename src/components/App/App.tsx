@@ -22,7 +22,7 @@ function App() {
   const [searchText, setSearchText] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [currentPage, setCurrentPage] = useState<number>(1);
-
+  const queryClient = useQueryClient();
   const { data, isLoading, isError, isSuccess } = useQuery({
     queryKey: ['title', currentPage, searchText],
     queryFn: () => fetchNotes(searchText, currentPage),
@@ -38,9 +38,9 @@ function App() {
   });
 
   const mutationDeleteNote = useMutation({
-    mutationFn: async (id: number) => deleteNote(id),
+    mutationFn: async (id: string) => deleteNote(id),
     onSuccess: () => {
-      console.log('delete');
+      // console.log('delete');
       queryClient.invalidateQueries({ queryKey: ['title'] });
     },
   });
@@ -52,15 +52,16 @@ function App() {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const queryClient = useQueryClient();
+  // function addNote (values: CreateNote) {
+  //   mutationAddNote.mutate(values);
+  // }
 
-  function addNote(values: CreateNote) {
-    mutationAddNote.mutate(values);
-  }
+  // function handleDeleteNote(id: string) {
+  //   mutationDeleteNote.mutate(id);
+  // }
 
-  function handleDeleteNote(id: number) {
-    mutationDeleteNote.mutate(id);
-  }
+  const addMutationNote = mutationAddNote.mutateAsync;
+  const deleteMutationNote = mutationDeleteNote.mutateAsync;
 
   const debouncedSearch = useDebouncedCallback((text: string) => {
     setSearchText(text);
@@ -102,7 +103,7 @@ function App() {
           <Modal onCancel={closeModal}>
             <NoteForm
               onCancel={closeModal}
-              onData={addNote}
+              addMutation={addMutationNote}
             />
           </Modal>
         )}
@@ -110,7 +111,7 @@ function App() {
       {data && data.notes.length > 0 && (
         <NoteList
           notes={data.notes}
-          onDelete={handleDeleteNote}
+          deleteMutation={deleteMutationNote}
         />
       )}
     </div>
