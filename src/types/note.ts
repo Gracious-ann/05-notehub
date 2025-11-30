@@ -7,10 +7,10 @@ export interface Note {
   tag: Tag;
 }
 
-export type Tag = 'work' | 'personal' | 'meeting' | 'shopping' | 'todo';
+export type Tag = 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
 
 export interface CreateNote {
   title: string;
   content: string;
-  tag: string;
+  tag: Tag;
 }

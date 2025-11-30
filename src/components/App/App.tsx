@@ -1,17 +1,12 @@
-import {
-  keepPreviousData,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import css from './App.module.css';
-import { createNote, deleteNote, fetchNotes } from '../../services/noteService';
+import { fetchNotes } from '../../services/noteService';
 import { useState } from 'react';
 import NoteList from '../NoteList/NoteList';
 import Pagination from '../Pagination/Pagination';
 import NoteForm from '../NoteForm/NoteForm';
 import Modal from '../Modal/Modal';
-import type { CreateNote } from '../../types/note';
+// import type { CreateNote } from '../../types/note';
 import SearchBox from '../SearchBox/SearchBox';
 import { useDebouncedCallback } from 'use-debounce';
 import Loader from '../Loader/Loader';
@@ -22,7 +17,7 @@ function App() {
   const [searchText, setSearchText] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const { data, isLoading, isError, isSuccess } = useQuery({
     queryKey: ['title', currentPage, searchText],
     queryFn: () => fetchNotes(searchText, currentPage),
@@ -30,20 +25,20 @@ function App() {
     placeholderData: keepPreviousData,
   });
 
-  const mutationAddNote = useMutation({
-    mutationFn: async (values: CreateNote) => createNote(values),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['title'] });
-    },
-  });
+  // const mutationAddNote = useMutation({
+  //   mutationFn: async (values: CreateNote) => createNote(values),
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ['title'] });
+  //   },
+  // });
 
-  const mutationDeleteNote = useMutation({
-    mutationFn: async (id: string) => deleteNote(id),
-    onSuccess: () => {
-      // console.log('delete');
-      queryClient.invalidateQueries({ queryKey: ['title'] });
-    },
-  });
+  // const mutationDeleteNote = useMutation({
+  //   mutationFn: async (id: string) => deleteNote(id),
+  //   onSuccess: () => {
+  //     // console.log('delete');
+  //     queryClient.invalidateQueries({ queryKey: ['title'] });
+  //   },
+  // });
 
   const totalPages = data?.totalPages ?? 0;
 
@@ -60,8 +55,8 @@ function App() {
   //   mutationDeleteNote.mutate(id);
   // }
 
-  const addMutationNote = mutationAddNote.mutateAsync;
-  const deleteMutationNote = mutationDeleteNote.mutateAsync;
+  // const addMutationNote = mutationAddNote.mutateAsync;
+  // const deleteMutationNote = mutationDeleteNote.mutateAsync;
 
   const debouncedSearch = useDebouncedCallback((text: string) => {
     setSearchText(text);
@@ -87,11 +82,11 @@ function App() {
           />
         }
         {isLoading && <Loader />}
-        {mutationAddNote.isPending && <Loader />}
-        {mutationDeleteNote.isPending && <Loader />}
+        {/* {mutationAddNote.isPending && <Loader />} */}
+        {/* {mutationDeleteNote.isPending && <Loader />} */}
         {isError && <ErrorMessage />}
-        {mutationAddNote.isError && <ErrorMessage />}
-        {mutationDeleteNote.isError && <ErrorMessage />}
+        {/* {mutationAddNote.isError && <ErrorMessage />} */}
+        {/* {mutationDeleteNote.isError && <ErrorMessage />} */}
         {isSuccess && totalPages > 1 && (
           <Pagination
             totalPage={totalPages}
@@ -101,19 +96,11 @@ function App() {
         )}
         {isModalOpen && (
           <Modal onCancel={closeModal}>
-            <NoteForm
-              onCancel={closeModal}
-              addMutation={addMutationNote}
-            />
+            <NoteForm onCancel={closeModal} />
           </Modal>
         )}
       </header>
-      {data && data.notes.length > 0 && (
-        <NoteList
-          notes={data.notes}
-          deleteMutation={deleteMutationNote}
-        />
-      )}
+      {data && data.notes.length > 0 && <NoteList notes={data.notes} />}
     </div>
   );
 }
