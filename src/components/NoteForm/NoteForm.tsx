@@ -30,7 +30,7 @@ function NoteForm({ onCancel }: NoteFormProps) {
   const mutationAddNote = useMutation({
     mutationFn: async (values: CreateNote) => createNote(values),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['title'] });
+      queryClient.invalidateQueries({ queryKey: ['notes'] });
       onCancel();
     },
   });

@@ -18,8 +18,8 @@ function App() {
   const [inputValue, setInputValue] = useState('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   // const queryClient = useQueryClient();
-  const { data, isLoading, isError, isSuccess } = useQuery({
-    queryKey: ['title', currentPage, searchText],
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['notes', currentPage, searchText],
     queryFn: () => fetchNotes(searchText, currentPage),
     enabled: true,
     placeholderData: keepPreviousData,
@@ -87,7 +87,7 @@ function App() {
         {isError && <ErrorMessage />}
         {/* {mutationAddNote.isError && <ErrorMessage />} */}
         {/* {mutationDeleteNote.isError && <ErrorMessage />} */}
-        {isSuccess && totalPages > 1 && (
+        {totalPages > 1 && (
           <Pagination
             totalPage={totalPages}
             onPageChange={setCurrentPage}
