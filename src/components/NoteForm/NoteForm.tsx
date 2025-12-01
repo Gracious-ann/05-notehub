@@ -104,11 +104,12 @@ function NoteForm({ onCancel }: NoteFormProps) {
               rows={8}
               className={css.textarea}
             />
-            {/* <ErrorMessage
+
+            <ErrorMessage
               name='content'
               component='span'
               className={css.error}
-            /> */}
+            />
           </div>
 
           <div className={css.formGroup}>
@@ -124,17 +125,18 @@ function NoteForm({ onCancel }: NoteFormProps) {
               name='tag'
               className={css.select}
             >
-              <ErrorMessage
-                name='tag'
-                component='span'
-                className={css.error}
-              />
               <option value='Todo'>Todo</option>
               <option value='Work'>Work</option>
               <option value='Personal'>Personal</option>
               <option value='Meeting'>Meeting</option>
               <option value='Shopping'>Shopping</option>
             </Field>
+
+            <ErrorMessage
+              name='tag'
+              component='span'
+              className={css.error}
+            />
           </div>
 
           <div className={css.actions}>
