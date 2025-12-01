@@ -3,7 +3,7 @@ import type { Note } from '../../types/note';
 import css from './NoteList.module.css';
 import { deleteNote } from '../../services/noteService';
 import Loader from '../Loader/Loader';
-import ErrorMessageBox from '../ErrorMessage/ErrorMessageBox';
+import ErrorMessageBox from '../ErrorMessageBox/ErrorMessageBox';
 
 interface NoteListProps {
   notes: Note[];

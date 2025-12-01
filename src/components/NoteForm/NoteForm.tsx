@@ -6,7 +6,7 @@ import type { CreateNote, Tag } from '../../types/note';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createNote } from '../../services/noteService';
 import Loader from '../Loader/Loader';
-import ErrorMessageBox from '../ErrorMessage/ErrorMessageBox';
+import ErrorMessageBox from '../ErrorMessageBox/ErrorMessageBox';
 
 interface NoteFormValue {
   title: string;

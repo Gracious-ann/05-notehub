@@ -9,7 +9,7 @@ import Modal from '../Modal/Modal';
 import SearchBox from '../SearchBox/SearchBox';
 import { useDebouncedCallback } from 'use-debounce';
 import Loader from '../Loader/Loader';
-import ErrorMessageBox from '../ErrorMessage/ErrorMessageBox';
+import ErrorMessageBox from '../ErrorMessageBox/ErrorMessageBox';
 
 function App() {
   const [searchText, setSearchText] = useState('');
