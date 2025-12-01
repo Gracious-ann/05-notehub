@@ -2,8 +2,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Note } from '../../types/note';
 import css from './NoteList.module.css';
 import { deleteNote } from '../../services/noteService';
-import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Loader from '../Loader/Loader';
+import ErrorMessageBox from '../ErrorMessage/ErrorMessageBox';
 
 interface NoteListProps {
   notes: Note[];
@@ -23,7 +23,7 @@ function NoteList({ notes }: NoteListProps) {
     <>
       {mutationDeleteNote.isPending && <Loader />}
       {mutationDeleteNote.isError && (
-        <ErrorMessage
+        <ErrorMessageBox
           message='Failed to delete note'
           duration={2000}
           onClose={() => mutationDeleteNote.reset()}

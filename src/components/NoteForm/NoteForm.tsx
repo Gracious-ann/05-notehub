@@ -6,6 +6,7 @@ import type { CreateNote, Tag } from '../../types/note';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createNote } from '../../services/noteService';
 import Loader from '../Loader/Loader';
+import ErrorMessageBox from '../ErrorMessage/ErrorMessageBox';
 
 interface NoteFormValue {
   title: string;
@@ -61,13 +62,8 @@ function NoteForm({ onCancel }: NoteFormProps) {
   return (
     <>
       {mutationAddNote.isPending && <Loader />}
-      {mutationAddNote.isError && (
-        <ErrorMessage
-          name='tag'
-          component='span'
-          className={css.error}
-        />
-      )}
+      {mutationAddNote.isError && <ErrorMessageBox />}
+
       <Formik
         initialValues={initialValues}
         validationSchema={OrderFormSchema}
@@ -108,11 +104,11 @@ function NoteForm({ onCancel }: NoteFormProps) {
               rows={8}
               className={css.textarea}
             />
-            <ErrorMessage
+            {/* <ErrorMessage
               name='content'
               component='span'
               className={css.error}
-            />
+            /> */}
           </div>
 
           <div className={css.formGroup}>
@@ -128,6 +124,11 @@ function NoteForm({ onCancel }: NoteFormProps) {
               name='tag'
               className={css.select}
             >
+              <ErrorMessage
+                name='tag'
+                component='span'
+                className={css.error}
+              />
               <option value='Todo'>Todo</option>
               <option value='Work'>Work</option>
               <option value='Personal'>Personal</option>
@@ -146,7 +147,6 @@ function NoteForm({ onCancel }: NoteFormProps) {
             </button>
 
             <button
-              // onClick={onSubmit}
               type='submit'
               className={css.submitButton}
             >
